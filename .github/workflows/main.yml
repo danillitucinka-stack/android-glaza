@@ -7,23 +7,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libncurses5 libtinfo5 openjdk-17-jdk build-essential python3-pip
+          sudo apt-get install -y python3-setuptools libncurses5 libtinfo5 openjdk-17-jdk build-essential ccache
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Cython
         run: |
-          pip install --user --upgrade buildozer
+          pip install --user buildozer
+          pip install --user Cython==0.29.33
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Prepare buildozer.spec
+      - name: Accept Android SDK licenses
         run: |
-          if [ -f buildozer.spec ]; then
-              echo "android.accept_sdk_license = True" >> buildozer.spec
-          else
-              echo "android.accept_sdk_license = True" > buildozer.spec
-          fi
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          yes | buildozer android debug || true
 
       - name: Build APK
         run: |
