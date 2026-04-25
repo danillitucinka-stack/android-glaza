@@ -40,8 +40,8 @@ android.logcat_filters = *:S python:D
 # (bool) Copy library instead of making a libpymodules.zip
 #android.copy_libs = 1
 
-# (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.arch = armeabi-v7a
+# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+android.archs = armeabi-v7a, arm64-v8a
 
 # (str) Android API to use
 android.api = 33
@@ -50,10 +50,13 @@ android.api = 33
 android.targetapi = 33
 
 # (int) Minimum API your APK will support
-android.minapi = 24
+android.minapi = 21
 
 # (str) Android NDK version to use
 android.ndk = 25b
 
 # (str) Android SDK version to use
 android.sdk = 33
+
+# (str) Android release artifact type (apk or aab)
+android.release_artifact = apk
