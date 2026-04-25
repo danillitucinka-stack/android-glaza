@@ -3,36 +3,22 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libncurses6 libtinfo5 cmake ant openjdk-17-jdk
+          sudo apt-get install -y python3-pip build-essential git python3 python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev openjdk-17-jdk unzip zip libncurses5 libtinfo5
 
       - name: Install Buildozer
         run: |
           pip install buildozer
 
-      - name: Set up Android SDK
+      - name: Accept Android SDK licenses
         run: |
-          wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
-          unzip commandlinetools-linux-10406996_latest.zip
-          mkdir -p ~/android-sdk/cmdline-tools
-          mv cmdline-tools ~/android-sdk/cmdline-tools/latest
-          export ANDROID_SDK_ROOT=~/android-sdk
-          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          yes | sdkmanager --licenses
-          sdkmanager "build-tools;34.0.0" "platforms;android-34"
+          yes | buildozer android piddle
 
       - name: Build APK
         run: |
