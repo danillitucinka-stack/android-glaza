@@ -10,15 +10,20 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip build-essential git python3 python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev openjdk-17-jdk unzip zip libncurses5 libtinfo5
+          sudo apt-get install -y libncurses5 libtinfo5 openjdk-17-jdk build-essential python3-pip
 
       - name: Install Buildozer
         run: |
-          pip install buildozer
+          pip install --user --upgrade buildozer
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Accept Android SDK licenses
+      - name: Prepare buildozer.spec
         run: |
-          yes | buildozer android piddle
+          if [ -f buildozer.spec ]; then
+              echo "android.accept_sdk_license = True" >> buildozer.spec
+          else
+              echo "android.accept_sdk_license = True" > buildozer.spec
+          fi
 
       - name: Build APK
         run: |
