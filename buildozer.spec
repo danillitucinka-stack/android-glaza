@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
 # (list) Application requirements
-requirements = python3,kivy,mediapipe,opencv-python,numpy,cython==0.29.33
+requirements = python3,kivy,mediapipe,opencv,numpy
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -41,7 +41,10 @@ android.logcat_filters = *:S python:D
 #android.copy_libs = 1
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.archs = armeabi-v7a, arm64-v8a
+android.archs = arm64-v8a
+
+# (int) Number of parallel jobs to use for compilation
+android.jobs = 8
 
 # (str) Android API to use
 android.api = 33
