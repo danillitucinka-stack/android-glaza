@@ -1,5 +1,8 @@
 [app]
 
+# (str) Build directory (if empty, it will be automatically created in your project dir)
+build_dir = /home/adminadmin/buildozer
+
 # (str) Title of your application
 title = Eye Commander
 
