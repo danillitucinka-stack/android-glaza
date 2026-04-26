@@ -1,41 +1,23 @@
 name: Build Android APK
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
-    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - name: Build with Buildozer
+        uses: ArtemSBulat/buildozer-action@v1
         with:
-          python-version: '3.11'
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev automake
-
-      - name: Install Buildozer and Cython
-        run: |
-          pip install --user buildozer
-          pip install --user Cython==0.29.33
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          yes | buildozer android debug || true
-
-      - name: Build APK
-        run: |
-          buildozer android debug
+          command: buildozer android debug
+          buildozer_version: master
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: Eye-Commander-Build
-          path: bin/*
+          name: EyeCommander-APK
+          path: bin/*.apk
